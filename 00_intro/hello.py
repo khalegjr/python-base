@@ -24,7 +24,6 @@ __version__ = "0.1.3"
 __author__ = "Júnior (Khaled)"
 __license__ = "Unlicense"
 
-from ast import arguments
 import os
 import sys
 

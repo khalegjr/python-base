@@ -26,12 +26,15 @@ Uso:
     $ n1: 5
     $ n2: 2
     $ 7
+
+Os resultados serão salvos em `inflixcalc.log`
 """
 __version__ = "0.1.0"
 __author__ = "Júnior (Khaled)"
 __license__ = "Unlicense"
 
-from ast import arguments
+from datetime import datetime
+import os
 import sys
 
 arguments = sys.argv[1:]
@@ -76,5 +79,14 @@ for num in nums:
 
 n1, n2 = validated_nums
 result = valid_operations[operation](n1, n2)
+
+# Criando log da operação
+path = os.curdir
+filepath = os.path.join(path, "inflixcalc.log")
+timestamp = datetime.now().isoformat()
+user = os.getenv("USER", "anonymous")
+
+with open(filepath, "a") as file_:
+    file_.write(f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
 
 print(f"O resultado é: {result}")

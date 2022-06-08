@@ -33,13 +33,22 @@ arguments = {
 }
 
 for arg in sys.argv[1:]:
-    key, value = arg.split("=")
+    try:
+        key, value = arg.split("=")
+    except ValueError as e:
+        # TODO: logging
+        print("[Error] {e}")
+        print("You need to use `=`")
+        print("try with --key=value")
+        sys.exit(1)
+    
     key = key.lstrip("-").strip()
     value = value.strip()
 
+    # Validação
     if key not in arguments:
         print(f"Argumento inválido: {key}")
-        sys.exit()
+        sys.exit(1)
     arguments[key] = value
 
 current_language = arguments["lang"]
@@ -63,4 +72,23 @@ msg = {
     "de_DE": "Hallo Welt!"
 }
 
-print((msg[current_language] + "\n") * int(arguments["count"]))
+# # LBYL
+# if current_language in msg:
+#     message = msg[current_language]
+# else:
+#     print(f"Language is invalid, choose from: {list(msg.keys())}")
+#     sys.exit(1)
+
+# EAFP
+try:
+    message = msg[current_language]
+except KeyError as e:
+    print(f"[Error] {e}")
+    print(f"Language is invalid, choose from: {list(msg.keys())}")
+    sys.exit(1)
+
+# Usando a estrutura de dados do dicionário
+# try com valor default
+# message = msg.get(current_language, msg["en_US"])
+
+print((message + "\n") * int(arguments["count"]))

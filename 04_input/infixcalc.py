@@ -39,7 +39,7 @@ import sys
 
 arguments = sys.argv[1:]
 
-# TODO: usar Exceptions
+# Validação
 if not arguments:
     operation = input("operação: ")
     n1 = input("n1: ")
@@ -77,7 +77,12 @@ for num in nums:
 
     validated_nums.append(num)
 
-n1, n2 = validated_nums
+try:
+    n1, n2 = validated_nums
+except valueError as e:
+    print(e)
+    sys.exit(1)
+
 result = valid_operations[operation](n1, n2)
 
 # Criando log da operação
@@ -86,7 +91,11 @@ filepath = os.path.join(path, "inflixcalc.log")
 timestamp = datetime.now().isoformat()
 user = os.getenv("USER", "anonymous")
 
-with open(filepath, "a") as file_:
-    file_.write(f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
-
 print(f"O resultado é: {result}")
+
+try:
+    with open(filepath, "a") as file_:
+        file_.write(f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
+except PermissionError as e:
+    print(str(e))
+    sys.exit(1)

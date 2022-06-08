@@ -1,18 +1,49 @@
 #!/usr/bin/env python3
+"""Envio mensagem em lista de emails
 
-__version__ = "0.1.1"
+O usuário passa como primeiro argumento uma lista de emails, separados por vírgula. E um segundo argumento com um template de mensagem.
+
+Funcionamento: 
+$ interpolacao.py lista_emails.txt email_tmpl.txt
+
+NÃO MANDE SPAM!!!
+"""
+
+__version__ = "0.1.2"
 __author__ = "Júnior (Khaled)"
 
-email_tmpl = """
-Olá, %(nome)s
+import os
+import sys
 
-Tem interesse em comprar %(produto)s?
+arguments = sys.argv[1:]
+if not arguments:
+    print("Informe o nome do arquivo de emails")
+    sys.exit(1)
 
-Este produto é ótimo para %(texto)s.
+filename = arguments[0]
+template_name = arguments[1]
 
-Clique agora em %(link)s
+path_ = os.curdir
+filepath = os.path.join(path_, filename)
+template_path = os.path.join(path_, template_name)
 
-Apenas %(quantidade)d disponíveis!
+customers = []
 
-preço promocional %(preco).2f.
-"""
+for line in open(filepath):
+    name, email = line.split(",")
+
+    # TODO: substituir por envio de email
+    print(f"Enviando email para: {email}")
+    print()
+    print(
+        open(template_path).read()
+        % {
+            "name": name,
+            "product": "caneta",
+            "text": "escrever muito bem",
+            "link": "http://www.canetaslegias.com",
+            "amount": 10,
+            "price": 50.5,
+        }
+    )
+    print("-" * 50)

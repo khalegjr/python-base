@@ -1,4 +1,4 @@
 .venv
-04_input/inflixcalc.log
-02_textos/emails.txt
-05_filesystem/notes.txt
+**/**/*.log
+**/**/*.txt
+!02_textos/email_tmpl.txt

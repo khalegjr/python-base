@@ -24,8 +24,34 @@ __version__ = "0.1.3"
 __author__ = "Júnior (Khaled)"
 __license__ = "Unlicense"
 
+import logging
 import os
 import sys
+
+# BOILERPLATE
+# TODO: usar função
+# TODO: usar lib (loguru)
+log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
+
+# Inicio da configuração do log
+# nossa instancia de loggin
+# setando para o nível de debug
+log = logging.Logger("logs.py", log_level)
+
+# level
+ch = logging.StreamHandler()
+ch.setLevel(log_level)
+
+# formatação
+fmt = logging.Formatter(
+    '%(asctime)s %(name)s %(levelname)s '
+    'l:%(lineno)d f:%(filename)s: %(message)s'
+)
+ch.setFormatter(fmt)
+
+# destino
+log.addHandler(ch)
+# Fim da configuração do log
 
 arguments = {
     "lang": None,
@@ -36,12 +62,13 @@ for arg in sys.argv[1:]:
     try:
         key, value = arg.split("=")
     except ValueError as e:
-        # TODO: logging
-        print("[Error] {e}")
-        print("You need to use `=`")
-        print("try with --key=value")
+        log.error(
+            "You need to use `=`, you passed %s, try with --key=value: %s",
+            arg,
+            str(e)
+        )
         sys.exit(1)
-    
+
     key = key.lstrip("-").strip()
     value = value.strip()
 

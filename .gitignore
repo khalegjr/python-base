@@ -2,3 +2,4 @@
 **/**/*.log
 **/**/*.txt
 !02_textos/email_tmpl.txt
+.vscode/

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Calculadora do tipo Infix
 
-As operações são passadas como uma string, separadas por espaços. 
+As operações são passadas como uma string, separadas por espaços.
 
-Funcionamento: 
+Funcionamento:
 [operação] [n1] [n2]
 
 Operações:
@@ -15,7 +15,7 @@ div -> /
     sum 7 8 | 7 + 8
     sub 9 3 | 9 - 3
     mul 51 4 | 51 * 4
-    div 12 6 | 12 / 6 
+    div 12 6 | 12 / 6
 
 Uso:
     $ infixcalc.py sum 5 2
@@ -33,9 +33,9 @@ __version__ = "0.1.0"
 __author__ = "Júnior (Khaled)"
 __license__ = "Unlicense"
 
-from datetime import datetime
 import os
 import sys
+from datetime import datetime
 
 arguments = sys.argv[1:]
 
@@ -79,7 +79,7 @@ for num in nums:
 
 try:
     n1, n2 = validated_nums
-except valueError as e:
+except ValueError as e:
     print(e)
     sys.exit(1)
 
@@ -95,7 +95,8 @@ print(f"O resultado é: {result}")
 
 try:
     with open(filepath, "a") as file_:
-        file_.write(f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
+        file_.write(
+            f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
 except PermissionError as e:
     print(str(e))
     sys.exit(1)

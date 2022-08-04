@@ -38,65 +38,70 @@ import sys
 from datetime import datetime
 
 arguments = sys.argv[1:]
-
-# Validação
-if not arguments:
-    operation = input("operação: ")
-    n1 = input("n1: ")
-    n2 = input("n2: ")
-    arguments = [operation, n1, n2]
-elif len(arguments) != 3:
-    print("Número de argumentos inválido")
-    print("Ex.: sum 5 5")
-    sys.exit(1)
-
-operation, *nums = arguments
-
-valid_operations = {
-    "sum": lambda x, y: x + y,
-    "sub": lambda x, y: x - y,
-    "mul": lambda x, y: x * y,
-    "div": lambda x, y: x / y
-}
-
-if operation not in valid_operations:
-    print(f"Operação inválida: {operation}")
-    print(f"Operações válidas: {valid_operations}")
-    sys.exit(1)
-
-validated_nums = []
-for num in nums:
-    # TODO: repetição while + exceptions
-    if not num.replace(".", "").isdigit():
-        print(f"Número inválido: {num}")
+while True:
+    # Validação
+    if not arguments:
+        operation = input("operação: ")
+        n1 = input("n1: ")
+        n2 = input("n2: ")
+        arguments = [operation, n1, n2]
+    elif len(arguments) != 3:
+        print("Número de argumentos inválido")
+        print("Ex.: sum 5 5")
         sys.exit(1)
-    if "." in num:
-        num = float(num)
-    else:
-        num = int(num)
 
-    validated_nums.append(num)
+    operation, *nums = arguments
 
-try:
-    n1, n2 = validated_nums
-except ValueError as e:
-    print(e)
-    sys.exit(1)
+    valid_operations = {
+        "sum": lambda x, y: x + y,
+        "sub": lambda x, y: x - y,
+        "mul": lambda x, y: x * y,
+        "div": lambda x, y: x / y
+    }
 
-result = valid_operations[operation](n1, n2)
+    if operation not in valid_operations:
+        print(f"Operação inválida: {operation}")
+        print(f"Operações válidas: {valid_operations}")
+        sys.exit(1)
 
-# Criando log da operação
-path = os.curdir
-filepath = os.path.join(path, "inflixcalc.log")
-timestamp = datetime.now().isoformat()
-user = os.getenv("USER", "anonymous")
+    validated_nums = []
+    for num in nums:
+        # TODO: repetição while + exceptions
+        if not num.replace(".", "").isdigit():
+            print(f"Número inválido: {num}")
+            sys.exit(1)
+        if "." in num:
+            num = float(num)
+        else:
+            num = int(num)
 
-print(f"O resultado é: {result}")
+        validated_nums.append(num)
 
-try:
-    with open(filepath, "a") as file_:
-        file_.write(
-            f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
-except PermissionError as e:
-    print(str(e))
-    sys.exit(1)
+    try:
+        n1, n2 = validated_nums
+    except ValueError as e:
+        print(e)
+        sys.exit(1)
+
+    result = valid_operations[operation](n1, n2)
+
+    # Criando log da operação
+    path = os.curdir
+    filepath = os.path.join(path, "inflixcalc.log")
+    timestamp = datetime.now().isoformat()
+    user = os.getenv("USER", "anonymous")
+
+    print(f"O resultado é: {result}")
+
+    try:
+        with open(filepath, "a") as file_:
+            file_.write(
+                f"{timestamp} - {user} - {operation}, {n1}, {n2} = {result}\n")
+    except PermissionError as e:
+        print(str(e))
+        sys.exit(1)
+
+    arguments = None  # apagando a última operação
+
+    if input("Pressione Enter para continuar ou qualquer outra tecla para sair"):
+        break

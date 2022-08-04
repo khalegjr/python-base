@@ -13,7 +13,6 @@ $ notes.py read tech
 __version__ = "0.1.0"
 __author__ = "Júnior (Khaled)"
 
-from datetime import datetime
 import os
 import sys
 
@@ -31,33 +30,45 @@ if arguments[0] not in cmd:
     print("Ex.: new \"Minha Nota\"")
     sys.exit(1)
 
-if arguments[0] == "read":
-    for line in open(filepath):
-        title, tag, text = line.split("\t")
+while True:
+    if arguments[0] == "read":
+        try:
+            arg_tag = arguments[1].lower()
+        except IndexError:
+            arg_tag = input("Qual a tag? ").strip().lower()
 
-        if tag.lower() == arguments[1].lower():
-            print(f"title: {title}")
-            print(f"text: {text}")
-            print("-" * 50)
-    sys.exit()
+        # leitura das notas
+        for line in open(filepath):
+            title, tag, text = line.split("\t")
 
-# TODO: usar Exceptions
-if arguments[0] == "new" and len(arguments) == 2:
+            if tag.lower() == arg_tag:
+                print(f"title: {title}")
+                print(f"text: {text}")
+                print("-" * 50)
+        sys.exit()
 
-    print(f"Criando nova nota - {arguments[1]}")
-    title = arguments[1]
-    text = [
-        f"{title}",
-        input("tag: ").strip(),
-        input("text:\n").strip(),
-    ]
-    
-    # \t - tsv (usando tab para separar os elementos)
-    with open(filepath, "a") as f:
-        f.write("\t".join(text))
-        f.write("\n")
-        
-    print("Nota criada com sucesso")
+    if arguments[0] == "new":
+        try:
+            title = arguments[1]
+        except IndexError:
+            title = input("Qual é o título? ").strip().title()
+
+        print(f"Criando nova nota")
+        text = [
+            f"{title}",
+            input("tag: ").strip(),
+            input("text:\n").strip(),
+        ]
+
+        # \t - tsv (usando tab para separar os elementos)
+        with open(filepath, "a") as f:
+            f.write("\t".join(text))
+            f.write("\n")
+
+        print("Nota criada com sucesso")
+
+        if input("Quer continuar adicionando notas: [N/y]").strip().lower() != "y":
+            break
 else:
     print("Número de argumentos inválido")
     sys.exit(1)

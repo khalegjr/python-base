@@ -30,10 +30,8 @@ while True:
     palavra_final = ""
 
     for letra in palavra:
-        if letra.lower() in VOGAIS:
-            palavra_final += letra * 2
-        else:
-            palavra_final += letra
+        # usando if ternário
+        palavra_final += letra * 2 if letra.lower() in VOGAIS else letra
 
     palavras.append(palavra_final)
 

@@ -9,8 +9,11 @@ ex
 8
 ...
 """
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "Júnior (Khaled)"
 
-for number in range(0, 201, 2):
+for number in range(1, 201):
+    if number % 2 != 0:
+        continue
+
     print(number)

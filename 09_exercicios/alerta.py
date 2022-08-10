@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-__version__ = "0.1.0'"
+__version__ = "0.1.2'"
 __author__ = 'Júnior (Khaled)'
 __license__ = 'Unlicense'
 
@@ -23,8 +23,21 @@ umidade: 90
 "ALERTA!!! 🥵♒ Perigo de calor úmido"
 """
 
-temp = int(input("Qual a tempuratura atual: ").strip())
-umid = int(input("Qual a umidade atual: ").strip())
+import logging
+import sys
+
+log = logging.Logger("alerta")
+
+try:
+    temp = float(input("Qual a tempuratura atual: ").strip())
+except ValueError:
+    log.error("Temperatura inválida")
+    sys.exit(1)
+try:
+    umid = float(input("Qual a umidade atual: ").strip())
+except ValueError:
+    log.error("Umidade inválida")
+    sys.exit(1)
 
 if (temp > 45):
     print("ALERTA!!! 🥵 Perigo calor extremo")
